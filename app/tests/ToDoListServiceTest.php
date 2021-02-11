@@ -35,20 +35,6 @@ class ToDoListServiceTest extends TestCase
     
     }
 
-    public function testAddItemExceptionDixitems()
-    {
-            $faker = \Faker\Factory::create('fr-FR');
-            $mailer= $this->createMock(MailerInterface::class);
-            $list = new ToDoListService($mailer);
-            for ($i = 0; $i < 11; $i++) {
-            $item = new Item();
-            $item->setName($faker->name());
-            $item->setContent($faker->email());
-            $this->expectException('LogicException');
-            $list->addItem($item);
-            }
-
-    }
 
     public function testAddItemExceptionEmail()
     {
@@ -56,7 +42,6 @@ class ToDoListServiceTest extends TestCase
             $mailer= $this->createMock(MailerInterface::class);
             $list = new ToDoListService($mailer);
             $mailer
-            ->expects($this->once())
             ->method('send')
             ->will($this->returnValue(true));
 
