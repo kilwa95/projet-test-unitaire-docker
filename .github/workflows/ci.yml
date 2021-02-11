@@ -1,0 +1,36 @@
+name: PHP Composer
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Cache Composer packages
+      id: composer-cache
+      uses: actions/cache@v2
+      with:
+        path: vendor
+        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-php-
+
+  #- name: build docker
+      #run: docker-compose build --no-cache
+    - name: run docker
+      run: docker-compose up -d
+    - name: create database
+      run:  docker-compose exec php bin/console doctrine:database:create
+    - name: create database
+      run:  docker-compose exec php bin/console doctrine:schema:create
+    - name: load datafixtures
+      run:  docker-compose exec php bin/console doctrine:fixtures:load --append
+    - name: Run test suite
+      run: docker-compose exec php bin/phpunit
+
+ 
