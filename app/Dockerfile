@@ -13,11 +13,11 @@ FROM php:${PHP_VERSION}-fpm-alpine AS app_php
 
 # persistent / runtime deps
 RUN apk add --no-cache \
-		acl \
-		fcgi \
-		file \
-		gettext \
-		git \
+	acl \
+	fcgi \
+	file \
+	gettext \
+	git \
 	;
 
 RUN docker-php-ext-install mysqli pdo pdo_mysql
@@ -25,39 +25,39 @@ RUN docker-php-ext-install mysqli pdo pdo_mysql
 ARG APCU_VERSION=5.1.18
 RUN set -eux; \
 	apk add --no-cache --virtual .build-deps \
-		$PHPIZE_DEPS \
-		icu-dev \
-		libzip-dev \
-		postgresql-dev \
-		zlib-dev \
-    freetype-dev \
-    libjpeg-turbo-dev \
-    libpng-dev \
+	$PHPIZE_DEPS \
+	icu-dev \
+	libzip-dev \
+	postgresql-dev \
+	zlib-dev \
+	freetype-dev \
+	libjpeg-turbo-dev \
+	libpng-dev \
 	; \
 	\
 	docker-php-ext-configure zip; \
-	#docker-php-ext-configure gd --with-freetype --with-jpeg; \
+	docker-php-ext-configure gd --with-freetype --with-jpeg; \
 	docker-php-ext-install -j$(nproc) \
-		intl \
-		pdo_pgsql \
-		zip \
-		gd \
+	intl \
+	pdo_pgsql \
+	zip \
+	gd \
 	; \
 	pecl install \
-		apcu-${APCU_VERSION} \
+	apcu-${APCU_VERSION} \
 	; \
 	pecl clear-cache; \
 	docker-php-ext-enable \
-		apcu \
-		opcache \
-		gd \
+	apcu \
+	opcache \
+	gd \
 	; \
 	\
 	runDeps="$( \
-		scanelf --needed --nobanner --format '%n#p' --recursive /usr/local/lib/php/extensions \
-			| tr ',' '\n' \
-			| sort -u \
-			| awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
+	scanelf --needed --nobanner --format '%n#p' --recursive /usr/local/lib/php/extensions \
+	| tr ',' '\n' \
+	| sort -u \
+	| awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
 	)"; \
 	apk add --no-cache --virtual .api-phpexts-rundeps $runDeps; \
 	\
@@ -74,8 +74,8 @@ COPY docker/php/conf.d/api-platform.prod.ini $PHP_INI_DIR/conf.d/api-platform.in
 
 RUN set -eux; \
 	{ \
-		echo '[www]'; \
-		echo 'ping.path = /ping'; \
+	echo '[www]'; \
+	echo 'ping.path = /ping'; \
 	} | tee /usr/local/etc/php-fpm.d/docker-healthcheck.conf
 
 # Workaround to allow using PHPUnit 8 with Symfony 4.3
@@ -90,23 +90,23 @@ RUN set -eux; \
 ENV PATH="${PATH}:/root/.composer/vendor/bin"
 
 RUN apk --update --no-cache add \
-    libgcc \
-    libstdc++ \
-    musl \
-    qt5-qtbase \
-    qt5-qtbase-x11 \
-    qt5-qtsvg \
-    qt5-qtwebkit \
-    ttf-freefont \
-    ttf-dejavu \
-    ttf-droid \
-    ttf-liberation \
-    ttf-ubuntu-font-family \
-    fontconfig
+	libgcc \
+	libstdc++ \
+	musl \
+	qt5-qtbase \
+	qt5-qtbase-x11 \
+	qt5-qtsvg \
+	qt5-qtwebkit \
+	ttf-freefont \
+	ttf-dejavu \
+	ttf-droid \
+	ttf-liberation \
+	ttf-ubuntu-font-family \
+	fontconfig
 
 # Add openssl dependencies for wkhtmltopdf
 RUN echo 'http://dl-cdn.alpinelinux.org/alpine/v3.8/main' >> /etc/apk/repositories && \
-    apk add --no-cache libcrypto1.0 libssl1.0
+	apk add --no-cache libcrypto1.0 libssl1.0
 
 COPY --from=wkhtmltopdf_image /bin/wkhtmltopdf /usr/bin/
 
