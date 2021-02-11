@@ -25,12 +25,12 @@ jobs:
     - name: run docker
       run: docker-compose up -d
     - name: create database
-      run:  docker-compose exec php bin/console doctrine:database:create
-    - name: create database
-      run:  docker-compose exec php bin/console doctrine:schema:create
+      run:  docker-compose exec -T php bin/console doctrine:database:create
+    - name: create shema  database
+      run:  docker-compose exec -T php bin/console doctrine:schema:create
     - name: load datafixtures
-      run:  docker-compose exec php bin/console doctrine:fixtures:load --append
+      run:  docker-compose exec -T php bin/console doctrine:fixtures:load --append
     - name: Run test suite
-      run: docker-compose exec php bin/phpunit
+      run: docker-compose exec -T php bin/phpunit
 
  
