@@ -19,7 +19,7 @@ RUN apk add --no-cache \
 	gettext \
 	git \
 	;
-RUN docker-php-ext-install mysqli pdo pdo_mysql
+#RUN docker-php-ext-install mysqli pdo pdo_mysql
 
 ARG APCU_VERSION=5.1.18
 RUN set -eux; \
