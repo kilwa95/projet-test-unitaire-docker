@@ -19,9 +19,9 @@ class ItemControllerTest extends WebTestCase
     {
 
         $client = static::createClient();
-        $client->request('POST', '/user/items/todolist/19',[],[], 
+        $client->request('POST', '/user/items/todolist/6',[],[], 
         ['CONTENT_TYPE' => 'application/json'],
-        '{"name":"matiere","content":"react", "user_id": 41}'
+        '{"name":"matiere","content":"react", "user_id": 1}'
     );
         $this->assertResponseIsSuccessful();
         $this->assertEquals(201, $client->getResponse()->getStatusCode());
@@ -31,7 +31,7 @@ class ItemControllerTest extends WebTestCase
     {
 
         $client = static::createClient();
-        $client->request('POST', '/user/items/todolist/19');
+        $client->request('POST', '/user/items/todolist/6');
         $this->assertEquals(204, $client->getResponse()->getStatusCode());
     }
 }

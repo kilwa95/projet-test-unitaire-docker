@@ -29,7 +29,7 @@ class ToDoListControllerTest extends WebTestCase
     public function testPatchTodolist()
     {
         $client = static::createClient();
-        $client->request('Patch', '/todolist/13',[],[], 
+        $client->request('Patch', '/todolist/1',[],[], 
         ['CONTENT_TYPE' => 'application/json'],
         '{"name":"react"}'
     );
@@ -41,7 +41,7 @@ class ToDoListControllerTest extends WebTestCase
     public function testPatchTodolistNotFound()
     {
         $client = static::createClient();
-        $client->request('Patch', '/todolist/13');
+        $client->request('Patch', '/todolist/1');
         $this->assertEquals(204, $client->getResponse()->getStatusCode());
     }
 }
