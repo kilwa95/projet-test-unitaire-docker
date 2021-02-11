@@ -20,10 +20,12 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-php-
 
-  #- name: build docker
-      #run: docker-compose build --no-cache
+    - name: build docker
+      run: docker-compose build --no-cache
     - name: run docker
       run: docker-compose up -d
+    - name: Install dependencies
+      run: composer install --ignore-platform-reqs
     - name: create database
       run:  docker-compose exec -T php bin/console doctrine:database:create
     - name: create shema  database
