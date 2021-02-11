@@ -19,7 +19,6 @@ RUN apk add --no-cache \
 	gettext \
 	git \
 	;
-
 RUN docker-php-ext-install mysqli pdo pdo_mysql
 
 ARG APCU_VERSION=5.1.18
@@ -36,7 +35,7 @@ RUN set -eux; \
 	; \
 	\
 	docker-php-ext-configure zip; \
-	docker-php-ext-configure gd --with-freetype --with-jpeg; \
+	#docker-php-ext-configure gd --with-freetype --with-jpeg; \
 	docker-php-ext-install -j$(nproc) \
 	intl \
 	pdo_pgsql \
