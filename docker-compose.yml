@@ -42,7 +42,7 @@ services:
     volumes:
       - ./app:/srv/app:rw
       - ./app/docker/php/conf.d/api-platform.dev.ini/:/usr/local/etc/php/conf.d/api-platform.ini
-      #- app-front:/srv/app/public/build
+      - app-front:/srv/app/public/build
       - app-sf-cache:/srv/app/var
 
   node:
@@ -69,7 +69,7 @@ services:
       - node
     volumes:
       - ./app/public:/srv/app/public:ro
-      #- app-front:/srv/app/public/build:ro
+      - app-front:/srv/app/public/build:ro
     ports:
       - "8082:80"
 
