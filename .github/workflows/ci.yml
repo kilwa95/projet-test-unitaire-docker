@@ -34,6 +34,6 @@ jobs:
     - name: load datafixtures
       run:  docker-compose exec -T php bin/console doctrine:fixtures:load --append
     - name: Run test uniatre
-      run: docker-compose exec -T php bin/phpunit
+      run: docker-compose exec -T php bin/phpunit --filter testPostTodolist
 
  
