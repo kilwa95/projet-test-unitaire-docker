@@ -25,6 +25,7 @@ jobs:
     - name: run docker
       run: docker-compose up -d
     - name: Install dependencies
+      working-directory: ./app/
       run: composer install --ignore-platform-reqs
     - name: create database
       run:  docker-compose exec -T php bin/console doctrine:database:create
