@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use App\Repository\UserRepository;
+use App\Service\ToDoListRealService;
+use App\Service\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -17,7 +20,7 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class ToDoListController extends AbstractController
 {
-     /**
+    /**
      * @Rest\Post("/todolist")
      * @param Request $request
      */
@@ -42,7 +45,22 @@ class ToDoListController extends AbstractController
             $response->setData('le body  est vide');
             return $response;
         }
-       
+
+    }
+
+    /**
+     * @Rest\Get("/todolists")
+     */
+    public function getTodolists(ToDoListServiceRepository $toDoListServiceRepository, ToDoListRealService $toDoListRealService): JsonResponse
+    {
+        $toDoLists = $toDoListServiceRepository->findAll();
+        $toDoListsJson = $toDoListRealService->serializeToDoList($toDoLists);
+        $response = new JsonResponse();
+        $response->headers->set('Content-Type', 'application/json');
+        $response->setStatusCode(200);
+        $response->setData($toDoListsJson);
+
+        return $response;
     }
     /**
      * @Rest\Patch("/todolist/{id}")
@@ -54,13 +72,13 @@ class ToDoListController extends AbstractController
         $response = new JsonResponse();
         $body = json_decode($request->getContent(), true);
         if($id && $body){
-         $list = $toDoListServiceRepository->find($id);
-         $em = $this->getDoctrine()->getManager();
-         $list->setName($body['name']);
-         $em->flush();
-         $response->setStatusCode(200);
-         $response->setData(' todolist Updated ');
-         return $response;
+            $list = $toDoListServiceRepository->find($id);
+            $em = $this->getDoctrine()->getManager();
+            $list->setName($body['name']);
+            $em->flush();
+            $response->setStatusCode(200);
+            $response->setData(' todolist Updated ');
+            return $response;
 
         }
         else{
