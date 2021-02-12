@@ -33,7 +33,7 @@ jobs:
       run:  docker-compose exec -T php bin/console doctrine:schema:create
     - name: load datafixtures
       run:  docker-compose exec -T php bin/console doctrine:fixtures:load --append
-    - name: Run test uniatre
+    - name: Run test phpunit
       run: docker-compose exec -T php bin/phpunit --filter testPostTodolist
 
  
